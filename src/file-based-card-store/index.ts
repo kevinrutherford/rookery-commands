@@ -1,0 +1,2 @@
+export { instantiate } from './instantiate'
+
