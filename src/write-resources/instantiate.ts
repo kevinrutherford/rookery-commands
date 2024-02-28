@@ -1,10 +1,10 @@
-import { updateCard } from './card/update'
+import * as collection from './collection'
 import { Command } from './command'
 
 export type Commands = {
-  updateCard: Command,
+  createCollection: Command,
 }
 
 export const instantiate = (): Commands => ({
-  updateCard: updateCard(),
+  createCollection: collection.create(),
 })

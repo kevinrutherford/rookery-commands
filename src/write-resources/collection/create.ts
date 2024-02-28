@@ -11,9 +11,9 @@ const paramsCodec = t.type({
   content: NonEmptyString,
 })
 
-type Update = () => Command
+type Create = () => Command
 
-export const updateCard: Update = () => (input) => pipe(
+export const create: Create = () => (input) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
