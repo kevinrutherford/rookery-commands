@@ -4,7 +4,6 @@ import { pipe } from 'fp-ts/function'
 import * as fileBasedCardStore from '../file-based-card-store'
 import { createHttpServer } from '../http/create-server'
 import * as rm from '../readmodel'
-import { instantiate as instantiateViews } from '../views'
 import * as writeResources from '../write-resources'
 
 export const makeServer = async (): Promise<void> => {
@@ -15,9 +14,8 @@ export const makeServer = async (): Promise<void> => {
     TE.map(RA.map((card) => readmodel.commands.create(card))),
     TE.getOrElse((error) => { throw new Error(JSON.stringify(error)) }),
   )()
-  const views = instantiateViews(readmodel)
   const commands = writeResources.instantiate(cardStore, readmodel)
 
-  createHttpServer(views, commands)
+  createHttpServer(commands)
 }
 
