@@ -1,2 +1,0 @@
-export { instantiate } from './instantiate'
-
