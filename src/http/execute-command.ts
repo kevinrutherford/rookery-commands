@@ -22,7 +22,7 @@ export const executeCommand: ExecuteCommand = (logger) => (command) => async (re
           logger.error(error.message, error.evidence)
         else
           logger.debug(error.message, error.evidence)
-        res.status(errorToStatus(error)).send()
+        res.status(errorToStatus(error)).send(error)
       },
       (resource) => res.status(StatusCodes.OK).send(resource),
     ),

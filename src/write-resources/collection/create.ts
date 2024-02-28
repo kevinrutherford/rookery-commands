@@ -6,9 +6,10 @@ import { Command } from '../command'
 import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
-  cardid: t.string,
-  title: NonEmptyString,
-  content: NonEmptyString,
+  id: NonEmptyString,
+  handle: NonEmptyString,
+  name: NonEmptyString,
+  description: NonEmptyString,
 })
 
 type Create = () => Command
