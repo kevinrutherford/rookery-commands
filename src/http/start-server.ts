@@ -8,6 +8,6 @@ export const startServer = (logger: Logger) => (server: Server): void => {
     onSignal: async () => { logger.info('Signal received') },
     signals: ['SIGINT', 'SIGTERM'],
   })
-  server.listen(8081)
+  server.listen(44001)
 }
 
