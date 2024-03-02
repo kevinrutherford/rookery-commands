@@ -30,10 +30,7 @@ const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
 
   const event = jsonEvent<SomeEvent>({
     type: 'collection-created',
-    data: {
-      ...cmd,
-      id: `/collections/${cmd.id}`,
-    },
+    data: cmd,
   })
 
   return pipe(
