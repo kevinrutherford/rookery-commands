@@ -10,6 +10,7 @@ export const router = (commands: Commands, logger: Logger): Router => {
   r.get('/ping', ping())
 
   r.post('/collections', executeCommand(logger)(commands.createCollection))
+  r.post('/entries', executeCommand(logger)(commands.createEntry))
 
   return r
 }
