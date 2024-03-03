@@ -11,6 +11,7 @@ export const router = (commands: Commands, logger: Logger): Router => {
 
   r.post('/collections', executeCommand(logger)(commands.createCollection))
   r.post('/entries', executeCommand(logger)(commands.createEntry))
+  r.post('/comments', executeCommand(logger)(commands.createComment))
 
   return r
 }
