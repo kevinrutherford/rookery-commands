@@ -1,37 +1,46 @@
-FROM node:18-alpine AS node
+FROM node:18.18-alpine AS node
 ENV NODE_OPTIONS --unhandled-rejections=strict --enable-source-maps
+WORKDIR /app
 
-RUN addgroup -g 17000 wiki \
-  && adduser -u 17000 -G wiki -D wiki \
-  && mkdir -p /var/opt/zk \
-  && chown wiki /var/opt/zk \
-  && chgrp wiki /var/opt/zk
-USER wiki
-RUN mkdir -p /home/wiki
-WORKDIR /home/wiki
-EXPOSE 8081
-VOLUME /var/opt/zk
+COPY .npmrc \
+  package.json \
+  package-lock.json \
+  ./
 
-COPY package.json package-lock.json ./
-
-# Stage: Development NPM install - - - - - - - - - - - - - - - - - - - - - -
+# Stage: Development NPM install - - - - - - - - - - - - - - - - - - - - - - - -
 #
 FROM node AS npm-dev
+
 RUN npm ci
 
-# Stage: Development environment - - - - - - - - - - - - - - - - - - - - - - -
+# Stage: Production build - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
-FROM node AS dev
-ENV NODE_ENV=development
+FROM node AS build-prod
+ENV NODE_ENV=production
 
-COPY .eslintignore \
-  .eslintrc.js \
-  tsconfig.json \
-  tsconfig.lint.json \
-  ./
-COPY --from=npm-dev /home/wiki/ .
-COPY scripts/ scripts/
+COPY tsconfig.json .
+COPY --from=npm-dev /app/ .
 COPY src/ src/
 
-CMD ["sh", "./scripts/start-dev.sh"]
+RUN npx tsc
+
+# Stage: Production NPM install - - - - - - - - - - - - - - - - - - - - - - - -
+#
+FROM node AS npm-prod
+
+RUN npm ci --production
+
+# Stage: Production environment - - - - - - - - - - - - - - - - - - - - - - - -
+#
+FROM node AS prod
+ENV NODE_ENV=production
+
+COPY --from=npm-prod /app/ .
+COPY --from=build-prod /app/build/ build/
+
+HEALTHCHECK --interval=5s --timeout=1s \
+  CMD wget --quiet --tries=1 --spider http://localhost:80/ping || exit 1
+
+EXPOSE 44002
+CMD ["node", "./build/index.js"]
 
