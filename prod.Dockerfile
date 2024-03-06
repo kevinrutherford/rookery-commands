@@ -39,7 +39,7 @@ COPY --from=npm-prod /app/ .
 COPY --from=build-prod /app/build/ build/
 
 HEALTHCHECK --interval=5s --timeout=1s \
-  CMD wget --quiet --tries=1 --spider http://localhost:80/ping || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:44002/ping || exit 1
 
 EXPOSE 44002
 CMD ["node", "./build/index.js"]
