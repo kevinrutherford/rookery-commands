@@ -1,6 +1,10 @@
-export type ErrorOutcome = {
-  category: 'bad-input' | 'exists' | 'not-found' | 'internal-error',
-  message: string,
-  evidence: Record<string, unknown>,
+type Error = {
+  source: {
+    pointer: string,
+  },
+  title: string,
+  detail?: string,
 }
+
+export type ErrorOutcome = ReadonlyArray<Error>
 

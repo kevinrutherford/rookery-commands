@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { StatusCodes } from 'http-status-codes'
-import { errorToStatus } from './error-to-status'
 import { Logger } from './logger'
 import { Command } from '../write-resources'
 
@@ -17,12 +16,9 @@ export const executeCommand: ExecuteCommand = (logger) => (command) => async (re
     },
     command,
     TE.match(
-      (error) => {
-        if (error.category === 'internal-error')
-          logger.error(error.message, error.evidence)
-        else
-          logger.debug(error.message, error.evidence)
-        res.status(errorToStatus(error)).send(error)
+      (errors) => {
+        logger.debug('validation failed', { errors })
+        res.status(StatusCodes.BAD_REQUEST).send({ errors })
       },
       (resource) => res.status(StatusCodes.OK).send(resource),
     ),
