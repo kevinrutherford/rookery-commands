@@ -16,7 +16,7 @@ export const validateInput = <A>(codec: t.Decoder<unknown, A>) => (
     RA.map((error) => ({
       source: { pointer: `/${error.context.map((c) => c.key).filter(Boolean).join('/')}` },
       title: 'Invalid input',
-      details: pipe(
+      detail: pipe(
         error,
         formatValidationError,
         O.getOrElseW(() => undefined),
