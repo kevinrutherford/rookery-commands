@@ -32,7 +32,7 @@ const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
   })
 
   return pipe(
-    T.of(client.appendToStream(event.data.id, event, { expectedRevision: NO_STREAM })),
+    T.of(client.appendToStream(`entry.${event.data.id}`, event, { expectedRevision: NO_STREAM })),
     TE.rightTask,
   )
 }
