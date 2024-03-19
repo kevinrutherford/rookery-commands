@@ -9,9 +9,18 @@ export const router = (commands: Commands, logger: Logger): Router => {
 
   r.get('/ping', ping())
 
-  r.post('/collections', executeCommand(logger)(commands.createCollection))
-  r.post('/entries', executeCommand(logger)(commands.createEntry))
-  r.post('/comments', executeCommand(logger)(commands.createComment))
+  const routes = [
+    { path: '/collections', method: 'post', handler: executeCommand(logger)(commands.createCollection) },
+    { path: '/entries', method: 'post', handler: executeCommand(logger)(commands.createEntry) },
+    { path: '/comments', method: 'post', handler: executeCommand(logger)(commands.createComment) },
+  ]
+
+  routes.forEach((route) => {
+    switch (route.method) {
+      case 'post':
+        r.post(route.path, route.handler)
+    }
+  })
 
   return r
 }
