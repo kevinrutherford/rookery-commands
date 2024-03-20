@@ -1,5 +1,5 @@
 type Error = {
-  source: {
+  source?: {
     pointer: string,
   },
   title: string,
