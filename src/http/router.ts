@@ -17,6 +17,10 @@ export const router = (routes: ReadonlyArray<Route>): Router => {
     switch (route.method) {
       case 'post':
         r.post(route.path, route.handler)
+        break
+      case 'patch':
+        r.patch(route.path, route.handler)
+        break
     }
   })
 
