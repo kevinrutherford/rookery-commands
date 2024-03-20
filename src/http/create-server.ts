@@ -19,7 +19,7 @@ const actions: Record<Action, string> = {
   'delete': 'delete',
 }
 
-type Cmd = {
+export type Cmd = {
   path: string,
   action: Action,
   handler: Command,

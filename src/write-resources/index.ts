@@ -1,1 +1,1 @@
-export { Commands, instantiate } from './instantiate'
+export { instantiate } from './instantiate'
