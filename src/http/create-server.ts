@@ -11,6 +11,14 @@ import * as L from './logger'
 import { startServer } from './start-server'
 import { Commands } from '../write-resources'
 
+type Action = 'create' | 'update' | 'delete'
+
+const actions: Record<Action, string> = {
+  'create': 'post',
+  'update': 'patch',
+  'delete': 'delete',
+}
+
 export const createHttpServer = (commands: Commands): void => {
   const logger = L.create({
     emit: (s: string) => process.stdout.write(s),
@@ -20,12 +28,13 @@ export const createHttpServer = (commands: Commands): void => {
 
   const routes = pipe(
     [
-      { path: '/collections', method: 'post', handler: commands.createCollection },
-      { path: '/entries', method: 'post', handler: commands.createEntry },
-      { path: '/comments', method: 'post', handler: commands.createComment },
+      { path: '/collections', action: 'create' as Action, handler: commands.createCollection },
+      { path: '/entries', action: 'create' as Action, handler: commands.createEntry },
+      { path: '/comments', action: 'create' as Action, handler: commands.createComment },
     ],
     A.map((cmd) => ({
-      ...cmd,
+      path: cmd.path,
+      method: actions[cmd.action],
       handler: executeCommand(logger)(cmd.handler),
     })),
   )
