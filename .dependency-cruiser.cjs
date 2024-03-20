@@ -196,8 +196,6 @@ module.exports = {
       path: [
         '^.*-spec.ts$',
         'helper',
-        '^src/index.ts$',
-        '^src/app$',
       ],
       dynamic: true,
     },
