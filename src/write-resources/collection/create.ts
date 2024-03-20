@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types/NonEmptyString'
-import { Command } from '../command'
+import { Command } from '../../http/index.open'
 import { validateInput } from '../validate-input'
 
 type CollectionCreatedEvent = {

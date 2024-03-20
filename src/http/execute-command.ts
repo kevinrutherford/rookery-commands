@@ -2,10 +2,12 @@ import { Request, Response } from 'express'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { StatusCodes } from 'http-status-codes'
+import { Command } from './command'
 import { Logger } from './logger'
-import { Command } from '../write-resources'
 
-type ExecuteCommand = (logger: Logger) => (command: Command) => (req: Request, res: Response) => Promise<void>
+export type RouteHandler = (req: Request, res: Response) => Promise<void>
+
+type ExecuteCommand = (logger: Logger) => (command: Command) => RouteHandler
 
 export const executeCommand: ExecuteCommand = (logger) => (command) => async (req, res) => {
   await pipe(

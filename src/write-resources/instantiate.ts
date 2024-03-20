@@ -1,7 +1,7 @@
 import * as collection from './collection'
-import { Command } from './command'
 import * as comment from './comment'
 import * as entry from './entry'
+import { Command } from '../http/index.open'
 
 export type Commands = {
   createCollection: Command,

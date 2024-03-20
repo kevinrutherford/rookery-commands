@@ -4,7 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { formatValidationError } from 'io-ts-reporters'
-import { ErrorOutcome } from '../domain/error-outcome'
+import { ErrorOutcome } from '../http/index.open'
 
 export const validateInput = <A>(codec: t.Decoder<unknown, A>) => (
   input: unknown,
