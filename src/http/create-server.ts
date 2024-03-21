@@ -9,11 +9,12 @@ import { Command } from './command'
 import { executeCommand } from './execute-command'
 import { logRequest } from './log-request'
 import * as L from './logger'
+import { Route } from './router'
 import { startServer } from './start-server'
 
 export type Action = 'create' | 'update' | 'delete'
 
-const actions: Record<Action, string> = {
+const actions: Record<Action, Route['method']> = {
   'create': 'post',
   'update': 'patch',
   'delete': 'delete',
@@ -38,7 +39,7 @@ export const createHttpServer = (commands: ReadonlyArray<Cmd>): void => {
       path: cmd.path,
       method: actions[cmd.action],
       handler: executeCommand(logger)(cmd.handler),
-    })),
+    }) satisfies Route),
   )
 
   const server = createServer(express()

@@ -2,9 +2,11 @@ import { Router } from 'express'
 import { RouteHandler } from './execute-command'
 import ping from './ping'
 
-type Route = {
+type Method = 'post' | 'patch' | 'delete'
+
+export type Route = {
   path: string,
-  method: string,
+  method: Method,
   handler: RouteHandler,
 }
 
@@ -15,11 +17,14 @@ export const router = (routes: ReadonlyArray<Route>): Router => {
 
   routes.forEach((route) => {
     switch (route.method) {
-      case 'post':
-        r.post(route.path, route.handler)
+      case 'delete':
+        r.delete(route.path, route.handler)
         break
       case 'patch':
         r.patch(route.path, route.handler)
+        break
+      case 'post':
+        r.post(route.path, route.handler)
         break
     }
   })

@@ -32,6 +32,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': ['error'],
     '@typescript-eslint/promise-function-async': ['error'],
     '@typescript-eslint/semi': ['error', 'never'],
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
     'fp-ts/no-module-imports': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['src/**/*.spec.*'] }],
     'import/no-useless-path-segments': ['error', {
