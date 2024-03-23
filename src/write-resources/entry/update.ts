@@ -23,7 +23,7 @@ const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>
 
-type FrontMatterAddedEventData = Params['data']['attributes']
+type FrontMatterAddedEventData = Params['data']['attributes'] & { entryId: string }
 
 type SomeEvent = JSONEventType<'front-matter-added', FrontMatterAddedEventData>
 
@@ -32,7 +32,10 @@ const send = (cmd: Params): TE.TaskEither<ErrorOutcome, unknown> => {
 
   const event = jsonEvent<SomeEvent>({
     type: 'front-matter-added',
-    data: cmd.data.attributes,
+    data: {
+      entryId: cmd.id,
+      ...cmd.data.attributes,
+    },
   })
 
   return pipe(
