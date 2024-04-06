@@ -26,9 +26,12 @@ const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>
 
-type FrontMatterAddedEventData = Params['data']['attributes'] & { workId: string }
+type WorkUpdatedEventData = {
+  workId: string,
+  attributes: Params['data']['attributes'],
+}
 
-type SomeEvent = JSONEventType<'work-updated', FrontMatterAddedEventData>
+type SomeEvent = JSONEventType<'work-updated', WorkUpdatedEventData>
 
 const send = (cmd: Params): TE.TaskEither<ErrorOutcome, unknown> => {
   const client = EventStoreDBClient.connectionString('esdb://eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000')
@@ -37,7 +40,7 @@ const send = (cmd: Params): TE.TaskEither<ErrorOutcome, unknown> => {
     type: 'work-updated',
     data: {
       workId: cmd.id,
-      ...cmd.data.attributes,
+      attributes: cmd.data.attributes,
     },
   })
 
