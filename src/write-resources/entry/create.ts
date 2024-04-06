@@ -9,7 +9,7 @@ import { validateInput } from '../validate-input'
 
 type DoiEnteredEvent = {
   id: string,
-  doi: string,
+  workId: string,
   collectionId: string,
 }
 
@@ -28,7 +28,11 @@ const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
 
   const event = jsonEvent<SomeEvent>({
     type: 'doi-entered',
-    data: cmd,
+    data: {
+      id: cmd.id,
+      workId: cmd.doi,
+      collectionId: cmd.collectionId,
+    },
   })
 
   return pipe(
