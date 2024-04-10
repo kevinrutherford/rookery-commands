@@ -12,7 +12,10 @@ const paramsCodec = t.type({
     type: t.literal('work'),
     id: NonEmptyString,
     attributes: t.union([
-      t.type({ crossrefStatus: t.literal('not-determined') }),
+      t.type({
+        crossrefStatus: t.literal('not-determined'),
+        reason: t.union([t.literal('response-unavailable'), t.literal('response-invalid')]),
+      }),
       t.type({ crossrefStatus: t.literal('not-found') }),
       t.type({
         crossrefStatus: t.literal('found'),
