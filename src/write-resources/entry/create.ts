@@ -1,10 +1,10 @@
-import { EventStoreDBClient, jsonEvent, JSONEventType, NO_STREAM } from '@eventstore/db-client'
-import * as T from 'fp-ts/Task'
+import { jsonEvent, JSONEventType } from '@eventstore/db-client'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types/NonEmptyString'
 import { Command } from '../../http/index.open'
+import { createStream } from '../create-stream'
 import { validateInput } from '../validate-input'
 
 type DoiEnteredEvent = {
@@ -24,8 +24,6 @@ type Params = t.TypeOf<typeof paramsCodec>
 type SomeEvent = JSONEventType<'doi-entered', DoiEnteredEvent>
 
 const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
-  const client = EventStoreDBClient.connectionString('esdb://eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000')
-
   const event = jsonEvent<SomeEvent>({
     type: 'doi-entered',
     data: {
@@ -34,11 +32,7 @@ const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
       collectionId: cmd.collectionId,
     },
   })
-
-  return pipe(
-    T.of(client.appendToStream(`entry.${event.data.id}`, event, { expectedRevision: NO_STREAM })),
-    TE.rightTask,
-  )
+  return createStream(`entry.${event.data.id}`, event)
 }
 
 type Create = () => Command
