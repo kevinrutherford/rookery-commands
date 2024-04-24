@@ -23,7 +23,7 @@ const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
       collectionId: cmd.collectionId,
     },
   }
-  return createStream(`entry.${event.data.id}`, event)
+  return createStream(`entry.${event.data.id}`)(event)
 }
 
 type Create = () => Command

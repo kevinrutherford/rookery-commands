@@ -8,7 +8,7 @@ type EventDefinition = {
   data: JSONType,
 }
 
-export const createStream = (streamName: string, event: EventDefinition): TE.TaskEither<unknown, unknown> => {
+export const createStream = (streamName: string) => (event: EventDefinition): TE.TaskEither<unknown, unknown> => {
   const client = EventStoreDBClient.connectionString('esdb://eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000')
   return pipe(
     T.of(client.appendToStream(streamName, jsonEvent(event), { expectedRevision: NO_STREAM })),

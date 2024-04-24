@@ -19,7 +19,7 @@ const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
     type: 'comment-created',
     data: cmd,
   }
-  return createStream(`comment.${event.data.id}`, event)
+  return createStream(`comment.${event.data.id}`)(event)
 }
 
 type Create = () => Command
