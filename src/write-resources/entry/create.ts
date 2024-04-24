@@ -1,4 +1,3 @@
-import { jsonEvent } from '@eventstore/db-client'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
@@ -16,14 +15,14 @@ const paramsCodec = t.type({
 type Params = t.TypeOf<typeof paramsCodec>
 
 const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
-  const event = jsonEvent({
+  const event = {
     type: 'doi-entered',
     data: {
       id: cmd.id,
       workId: cmd.doi,
       collectionId: cmd.collectionId,
     },
-  })
+  }
   return createStream(`entry.${event.data.id}`, event)
 }
 

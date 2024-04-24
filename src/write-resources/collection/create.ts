@@ -1,4 +1,3 @@
-import { jsonEvent } from '@eventstore/db-client'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
@@ -17,10 +16,10 @@ const paramsCodec = t.type({
 type Params = t.TypeOf<typeof paramsCodec>
 
 const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
-  const event = jsonEvent({
+  const event = {
     type: 'collection-created',
     data: cmd,
-  })
+  }
   return createStream(`collection.${event.data.id}`, event)
 }
 
