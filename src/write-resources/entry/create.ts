@@ -12,27 +12,19 @@ const paramsCodec = t.type({
   collectionId: NonEmptyString,
 })
 
-type Params = t.TypeOf<typeof paramsCodec>
-
-const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
-  const event = {
+export const create = (): Command => (input) => pipe(
+  input,
+  validateInput(paramsCodec),
+  TE.fromEither,
+  TE.map((cmd) => ({
     type: 'doi-entered',
     data: {
       id: cmd.id,
       workId: cmd.doi,
       collectionId: cmd.collectionId,
     },
-  }
-  return createStream(`entry.${event.data.id}`)(event)
-}
-
-type Create = () => Command
-
-export const create: Create = () => (input) => pipe(
-  input,
-  validateInput(paramsCodec),
-  TE.fromEither,
-  TE.map(send),
+  })),
+  TE.map((event) => createStream(`entry.${event.data.id}`)(event)),
   TE.map(() => ({})),
 )
 
