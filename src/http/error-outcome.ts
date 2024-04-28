@@ -1,4 +1,4 @@
-type Error = {
+type ErrorDocument = {
   source?: {
     pointer: string,
   },
@@ -6,5 +6,5 @@ type Error = {
   detail?: string,
 }
 
-export type ErrorOutcome = ReadonlyArray<Error>
+export type ErrorOutcome = ReadonlyArray<ErrorDocument>
 
