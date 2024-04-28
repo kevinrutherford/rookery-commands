@@ -20,6 +20,7 @@ export const executeCommand: ExecuteCommand = (logger) => (command) => async (re
     TE.match(
       (errors) => {
         logger.debug('validation failed', {
+          errors: JSON.stringify(errors),
           params: JSON.stringify(req.params),
           body: JSON.stringify(req.body),
           query: JSON.stringify(req.query),
