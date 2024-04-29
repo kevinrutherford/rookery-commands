@@ -15,7 +15,7 @@ const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>
 
-const send = (cmd: Params): TE.TaskEither<unknown, unknown> => {
+const send = (cmd: Params) => {
   const event = {
     type: 'collection-created',
     data: cmd,
@@ -29,7 +29,7 @@ export const create: Create = () => (input) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
-  TE.map(send),
+  TE.chain(send),
   TE.map(() => ({})),
 )
 

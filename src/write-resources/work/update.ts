@@ -36,7 +36,7 @@ type WorkUpdatedEventData = {
 
 type SomeEvent = JSONEventType<'work-updated', WorkUpdatedEventData>
 
-const send = (cmd: Params): TE.TaskEither<ErrorOutcome, unknown> => {
+const send = (cmd: Params) => {
   const client = EventStoreDBClient.connectionString('esdb://eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000')
 
   const event = jsonEvent<SomeEvent>({
@@ -50,7 +50,7 @@ const send = (cmd: Params): TE.TaskEither<ErrorOutcome, unknown> => {
   return pipe(
     TE.tryCatch(
       async () => client.appendToStream(`work.${cmd.data.id}`, event),
-      (e) => [{
+      (e): ErrorOutcome => [{
         title: 'Error appending to event stream',
         detail: JSON.stringify(e),
       }],
