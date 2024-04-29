@@ -1,23 +1,21 @@
-import { NextFunction, Request, Response } from 'express'
+import { Middleware } from 'koa'
 import { Logger } from './logger'
 
-type Middleware = (req: Request, res: Response, next: NextFunction) => Promise<void>
-
-export const logRequest = (logger: Logger): Middleware => async (req, res, next) => {
+export const logRequest = (logger: Logger): Middleware => async (context, next) => {
   const start = Date.now()
   logger.info('HTTP request', {
-    method: req.method,
-    url: req.url,
+    method: context.request.method,
+    url: context.request.url,
   })
   try {
-    next()
+    await next()
   } catch (e: unknown) {
     logger.error('Caught exception', {
       error: e,
     })
   } finally {
     logger.info('HTTP response', {
-      status: res.statusCode,
+      status: context.response.status,
       duration: `${Date.now() - start}ms`,
     })
   }

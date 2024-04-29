@@ -1,9 +1,8 @@
 import { createServer } from 'http'
-import cors from 'cors'
-import express, { json } from 'express'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
-import helmet from 'helmet'
+import Koa from 'koa'
+import bodyParser from 'koa-bodyparser'
 import { Command } from './command'
 import { executeCommand } from './execute-command'
 import { logRequest } from './log-request'
@@ -41,13 +40,14 @@ export const createHttpServer = (commands: ReadonlyArray<Cmd>): void => {
     }) satisfies Route),
   )
 
-  const server = createServer(express()
-    .use(logRequest(logger))
-    .use(helmet())
-    .use(json())
-    .use(cors())
-    .use('/', router(routes)),
-  )
+  const routery = router(routes)
+
+  const app = new Koa()
+  app.use(logRequest(logger))
+  app.use(bodyParser({ enableTypes: ['json'] }))
+  app.use(routery.routes())
+  app.use(routery.allowedMethods())
+  const server = createServer(app.callback())
   server.on('listening', (): void => logger.info('Server running'))
   server.on('close', (): void => logger.info('Server stopping'))
   startServer(logger)(server)

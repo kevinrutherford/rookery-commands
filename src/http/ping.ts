@@ -1,10 +1,12 @@
-import { NextFunction, Request, Response } from 'express'
+import { Middleware } from '@koa/router'
+import { StatusCodes } from 'http-status-codes'
 
-export default () => (
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    res.set('Cache-Control', 'no-store, must-revalidate')
-    res.status(200).send('pong')
-    next()
+export default (): Middleware => async (context, next) => {
+  context.response.headers = {
+    'Cache-Control': 'no-store, must-revalidate',
   }
-)
+  context.response.status = StatusCodes.OK
+  context.response.body = 'pong'
+  await next()
+}
 

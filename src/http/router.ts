@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import Router from '@koa/router'
 import { RouteHandler } from './execute-command'
 import ping from './ping'
 
@@ -11,7 +11,7 @@ export type Route = {
 }
 
 export const router = (routes: ReadonlyArray<Route>): Router => {
-  const r = Router()
+  const r = new Router()
 
   r.get('/ping', ping())
 
