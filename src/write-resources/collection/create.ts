@@ -8,7 +8,6 @@ import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
   id: NonEmptyString,
-  handle: NonEmptyString,
   name: NonEmptyString,
   description: NonEmptyString,
 })

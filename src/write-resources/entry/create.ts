@@ -24,7 +24,7 @@ export const create = (): Command => (input) => pipe(
       collectionId: cmd.collectionId,
     },
   })),
-  TE.map((event) => createStream(`entry.${event.data.id}`)(event)),
+  TE.chain((event) => createStream(`entry.${event.data.id}`)(event)),
   TE.map(() => ({})),
 )
 
