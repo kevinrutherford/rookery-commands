@@ -20,7 +20,7 @@ const send = (cmd: Params) => {
     type: 'community-created',
     data: cmd,
   }
-  return createStream(`community.${event.data.id}`)(event)
+  return createStream('community')(event)
 }
 
 type Create = () => Command
