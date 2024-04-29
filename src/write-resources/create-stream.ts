@@ -1,12 +1,7 @@
 import { EventStoreDBClient, jsonEvent, JSONType, NO_STREAM } from '@eventstore/db-client'
-import * as E from 'fp-ts/Either'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { ErrorOutcome } from '../http/error-outcome'
-
-const toErrorOutcome = (error: Error): ErrorOutcome => ([{
-  title: error.toString(),
-}])
 
 type EventDefinition = {
   type: string,
@@ -18,9 +13,10 @@ export const createStream = (streamName: string) => (event: EventDefinition): TE
   return pipe(
     TE.tryCatch(
       async () => client.appendToStream(streamName, jsonEvent(event), { expectedRevision: NO_STREAM }),
-      E.toError,
+      () => ([{
+        title: 'Unknown error from EventStore',
+      }]),
     ),
-    TE.mapLeft(toErrorOutcome),
   )
 }
 
