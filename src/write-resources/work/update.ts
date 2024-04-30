@@ -7,7 +7,6 @@ import { Command, ErrorOutcome } from '../../http/index.open'
 import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
-  id: NonEmptyString,
   data: t.type({
     type: t.literal('work'),
     id: NonEmptyString,
@@ -42,7 +41,7 @@ const send = (cmd: Params) => {
   const event = jsonEvent<SomeEvent>({
     type: 'work-updated',
     data: {
-      workId: cmd.id,
+      workId: cmd.data.id,
       attributes: cmd.data.attributes,
     },
   })
