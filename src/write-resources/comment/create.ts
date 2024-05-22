@@ -2,8 +2,8 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types/NonEmptyString'
+import { createStream } from '../../eventstore/create-stream'
 import { Command } from '../../http/index.open'
-import { createStream } from '../create-stream'
 import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({

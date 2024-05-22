@@ -225,20 +225,8 @@ module.exports = {
               attributes: { fillcolor: '#c9dff4' },
             },
             {
-              criteria: { source: 'views' },
-              attributes: { fillcolor: 'white' },
-            },
-            {
-              criteria: { source: 'file-based-card-store|http' },
+              criteria: { source: 'app|eventstore|http' },
               attributes: { fillcolor: '#f8cce0' },
-            },
-            {
-              criteria: { source: 'sagas' },
-              attributes: { fillcolor: '#d0bfe8' },
-            },
-            {
-              criteria: { source: 'readmodel' },
-              attributes: { fillcolor: '#b6e4db' },
             },
           ],
         },
@@ -274,20 +262,8 @@ module.exports = {
               attributes: { fillcolor: '#c9dff4' },
             },
             {
-              criteria: { source: 'views' },
-              attributes: { fillcolor: 'white' },
-            },
-            {
-              criteria: { source: 'file-based-card-store|http' },
+              criteria: { source: 'app|eventstore|http' },
               attributes: { fillcolor: '#f8cce0' },
-            },
-            {
-              criteria: { source: 'sagas' },
-              attributes: { fillcolor: '#d0bfe8' },
-            },
-            {
-              criteria: { source: 'readmodel' },
-              attributes: { fillcolor: '#b6e4db' },
             },
           ],
         },
