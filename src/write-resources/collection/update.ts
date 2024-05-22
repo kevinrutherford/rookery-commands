@@ -1,4 +1,4 @@
-import { EventStoreDBClient, jsonEvent, JSONEventType } from '@eventstore/db-client'
+import { EventStoreDBClient, jsonEvent } from '@eventstore/db-client'
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
@@ -18,17 +18,10 @@ const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>
 
-type CollectionUpdatedEventData = {
-  collectionId: string,
-  attributes: Params['data']['attributes'],
-}
-
-type SomeEvent = JSONEventType<'collection-updated', CollectionUpdatedEventData>
-
 const send = (cmd: Params) => {
   const client = EventStoreDBClient.connectionString('esdb://eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000')
 
-  const event = jsonEvent<SomeEvent>({
+  const event = jsonEvent({
     type: 'collection-updated',
     data: {
       collectionId: cmd.data.id,
