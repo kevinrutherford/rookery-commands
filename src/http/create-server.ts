@@ -16,9 +16,9 @@ import { startServer } from './start-server'
 export type Action = 'create' | 'update' | 'delete'
 
 const actions: Record<Action, Route['method']> = {
-  'create': 'post',
-  'update': 'patch',
-  'delete': 'delete',
+  create: 'post',
+  update: 'patch',
+  delete: 'delete',
 }
 
 export type Cmd = {

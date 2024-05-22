@@ -18,14 +18,12 @@ const update = (path: string, handler: Cmd['handler']) => ({
   handler,
 })
 
-export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
-  return [
-    create('/community', community.create(eventstore)),
-    create('/collections', collection.create(eventstore)),
-    update('/collections/:id', collection.update(eventstore)),
-    create('/entries', entry.create(eventstore)),
-    update('/works/:id(10.*)', work.update(eventstore)),
-    create('/comments', comment.create(eventstore)),
-  ]
-}
+export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => [
+  create('/community', community.create(eventstore)),
+  create('/collections', collection.create(eventstore)),
+  update('/collections/:id', collection.update(eventstore)),
+  create('/entries', entry.create(eventstore)),
+  update('/works/:id(10.*)', work.update(eventstore)),
+  create('/comments', comment.create(eventstore)),
+]
 
