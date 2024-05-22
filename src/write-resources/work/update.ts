@@ -36,9 +36,7 @@ const send = (cmd: Params) => appendStream(`work.${cmd.data.id}`)({
   },
 })
 
-type Update = () => Command
-
-export const update: Update = () => (input) => pipe(
+export const update = (): Command => (input) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
