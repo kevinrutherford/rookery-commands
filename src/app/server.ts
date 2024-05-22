@@ -1,16 +1,10 @@
-import { appendStream } from '../eventstore/append-stream'
-import { createStream } from '../eventstore/create-stream'
-import { Eventstore } from '../eventstore/eventstore'
+import * as eventstore from '../eventstore/instantiate'
 import { createHttpServer } from '../http/create-server'
 import * as writeResources from '../write-resources'
 
 export const makeServer = async (): Promise<void> => {
-  const eventstore: Eventstore = {
-    appendStream,
-    createStream,
-  }
-
-  const commands = writeResources.instantiate(eventstore)
+  const es = eventstore.instantiate()
+  const commands = writeResources.instantiate(es)
 
   createHttpServer(commands)
 }
