@@ -19,7 +19,7 @@ export const instantiate = (): ReadonlyArray<Cmd> => {
     { path: '/collections', action: 'create' as Action, handler: collection.create() },
     { path: '/collections/:id', action: 'update' as Action, handler: collection.update(eventstore) },
     { path: '/entries', action: 'create' as Action, handler: entry.create() },
-    { path: '/works/:id(10.*)', action: 'update' as Action, handler: work.update() },
+    { path: '/works/:id(10.*)', action: 'update' as Action, handler: work.update(eventstore) },
     { path: '/comments', action: 'create' as Action, handler: comment.create() },
   ]
 }
