@@ -8,6 +8,18 @@ import { createStream } from '../eventstore/create-stream'
 import { Eventstore } from '../eventstore/eventstore'
 import { Action, Cmd } from '../http/index.open'
 
+const create = (path: string, handler: Cmd['handler']) => ({
+  path,
+  action: 'create' as Action,
+  handler,
+})
+
+const update = (path: string, handler: Cmd['handler']) => ({
+  path,
+  action: 'update' as Action,
+  handler,
+})
+
 export const instantiate = (): ReadonlyArray<Cmd> => {
   const eventstore: Eventstore = {
     appendStream,
@@ -15,12 +27,12 @@ export const instantiate = (): ReadonlyArray<Cmd> => {
   }
 
   return [
-    { path: '/community', action: 'create' as Action, handler: community.create() },
-    { path: '/collections', action: 'create' as Action, handler: collection.create() },
-    { path: '/collections/:id', action: 'update' as Action, handler: collection.update(eventstore) },
-    { path: '/entries', action: 'create' as Action, handler: entry.create() },
-    { path: '/works/:id(10.*)', action: 'update' as Action, handler: work.update(eventstore) },
-    { path: '/comments', action: 'create' as Action, handler: comment.create() },
+    create('/community', community.create()),
+    create('/collections', collection.create()),
+    update('/collections/:id', collection.update(eventstore)),
+    create('/entries', entry.create()),
+    update('/works/:id(10.*)', work.update(eventstore)),
+    create('/comments', comment.create()),
   ]
 }
 
