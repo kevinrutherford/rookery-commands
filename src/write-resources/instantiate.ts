@@ -8,6 +8,7 @@ import { Action, Cmd } from '../http/index.open'
 export const instantiate = (): ReadonlyArray<Cmd> => [
   { path: '/community', action: 'create' as Action, handler: community.create() },
   { path: '/collections', action: 'create' as Action, handler: collection.create() },
+  { path: '/collections/:id', action: 'update' as Action, handler: collection.update() },
   { path: '/entries', action: 'create' as Action, handler: entry.create() },
   { path: '/works/:id(10.*)', action: 'update' as Action, handler: work.update() },
   { path: '/comments', action: 'create' as Action, handler: comment.create() },
