@@ -2,8 +2,8 @@ import * as collection from './collection'
 import * as comment from './comment'
 import * as community from './community'
 import * as entry from './entry'
+import { Eventstore } from './eventstore'
 import * as work from './work'
-import { Eventstore } from '../eventstore/eventstore'
 import { Action, Cmd } from '../http/index.open'
 
 const create = (path: string, handler: Cmd['handler']) => ({

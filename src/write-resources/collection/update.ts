@@ -2,8 +2,8 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types/NonEmptyString'
-import { Eventstore } from '../../eventstore/eventstore'
 import { Command } from '../../http/index.open'
+import { Eventstore } from '../eventstore'
 import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
