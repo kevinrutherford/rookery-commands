@@ -2,8 +2,7 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types/NonEmptyString'
-import { Command } from '../../http/index.open'
-import { Eventstore } from '../eventstore'
+import { CommandHandler } from '../../http/command'
 import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
@@ -12,7 +11,7 @@ const paramsCodec = t.type({
   collectionId: NonEmptyString,
 })
 
-export const create = (eventstore: Eventstore): Command => (input) => pipe(
+export const create: CommandHandler = (eventstore) => (input) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,

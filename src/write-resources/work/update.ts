@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { NonEmptyString } from 'io-ts-types/NonEmptyString'
-import { Command } from '../../http/index.open'
+import { CommandHandler } from '../../http/command'
 import { Eventstore } from '../eventstore'
 import { validateInput } from '../validate-input'
 
@@ -39,7 +39,7 @@ const send = (eventstore: Eventstore) => (cmd: Params) => pipe(
   eventstore.appendStream(`work.${cmd.data.id}`),
 )
 
-export const update = (eventstore: Eventstore): Command => (input) => pipe(
+export const update: CommandHandler = (eventstore) => (input) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
