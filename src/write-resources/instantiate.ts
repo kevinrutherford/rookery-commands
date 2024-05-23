@@ -4,26 +4,25 @@ import * as community from './community'
 import * as entry from './entry'
 import { Eventstore } from './eventstore'
 import * as work from './work'
+import { CommandHandler } from '../http/command'
 import { Action, Cmd } from '../http/index.open'
 
-const create = (path: string, handler: Cmd['handler']) => ({
+const makeEndpoint = (eventstore: Eventstore, action: string) => (path: string, handler: CommandHandler) => ({
   path,
-  action: 'create' as Action,
-  handler,
+  action: action as Action,
+  handler: handler(eventstore),
 })
 
-const update = (path: string, handler: Cmd['handler']) => ({
-  path,
-  action: 'update' as Action,
-  handler,
-})
-
-export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => [
-  create('/community', community.create(eventstore)),
-  create('/collections', collection.create(eventstore)),
-  update('/collections/:id', collection.update(eventstore)),
-  create('/entries', entry.create(eventstore)),
-  update('/works/:id(10.*)', work.update(eventstore)),
-  create('/comments', comment.create(eventstore)),
-]
+export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
+  const create = makeEndpoint(eventstore, 'create')
+  const update = makeEndpoint(eventstore, 'update')
+  return [
+    create('/community', community.create),
+    create('/collections', collection.create),
+    update('/collections/:id', collection.update),
+    create('/entries', entry.create),
+    update('/works/:id(10.*)', work.update),
+    create('/comments', comment.create),
+  ]
+}
 
