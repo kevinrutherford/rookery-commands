@@ -18,12 +18,12 @@ export const create: CommandHandler = (eventstore) => (input) => pipe(
   TE.map((cmd) => ({
     type: 'doi-entered',
     data: {
-      id: cmd.id,
-      workId: cmd.doi,
+      entryId: cmd.id,
+      doi: cmd.doi,
       collectionId: cmd.collectionId,
     },
   })),
-  TE.chain((event) => eventstore.createStream(`entry.${event.data.id}`)(event)),
+  TE.chain((event) => eventstore.createStream(`entry.${event.data.entryId}`)(event)),
   TE.map(() => ({})),
 )
 
