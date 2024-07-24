@@ -32,6 +32,7 @@ const send = (eventstore: Eventstore) => (cmd: Params) => pipe(
   {
     type: 'work-updated',
     data: {
+      actorId: 'you',
       workId: cmd.data.id,
       attributes: cmd.data.attributes,
     },

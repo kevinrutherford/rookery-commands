@@ -17,7 +17,10 @@ type Params = t.TypeOf<typeof paramsCodec>
 const send = (eventstore: Eventstore) => (cmd: Params) => {
   const event = {
     type: 'comment-created',
-    data: cmd,
+    data: {
+      ...cmd,
+      actorId: 'you',
+    },
   }
   return eventstore.createStream(`comment.${event.data.id}`)(event)
 }

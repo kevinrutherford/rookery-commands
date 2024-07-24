@@ -23,6 +23,7 @@ const send = (eventstore: Eventstore) => (cmd: Params) => pipe(
     type: 'collection-updated',
     data: {
       collectionId: cmd.data.id,
+      actorId: 'you',
       attributes: cmd.data.attributes,
     },
   },

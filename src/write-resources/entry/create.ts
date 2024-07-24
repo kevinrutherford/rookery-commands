@@ -21,6 +21,7 @@ export const create: CommandHandler = (eventstore) => (input) => pipe(
       entryId: cmd.id,
       doi: cmd.doi,
       collectionId: cmd.collectionId,
+      actorId: 'you',
     },
   })),
   TE.chain((event) => eventstore.createStream(`entry.${event.data.entryId}`)(event)),

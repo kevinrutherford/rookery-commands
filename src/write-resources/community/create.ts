@@ -44,7 +44,10 @@ type Params = t.TypeOf<typeof paramsCodec>
 const send = (eventstore: Eventstore) => (cmd: Params) => {
   const event = {
     type: 'community-created',
-    data: cmd,
+    data: {
+      ...cmd,
+      actorId: 'you',
+    },
   }
   return eventstore.createStream('community')(event)
 }
