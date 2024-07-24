@@ -34,6 +34,7 @@ const authenticator: Middleware = async (context, next) => {
     context.response.status = StatusCodes.UNAUTHORIZED
     context.response.type = 'json'
     context.response.body = [{
+      code: 'forbidden',
       title: 'Not authorised',
     }] satisfies ErrorOutcome
   }

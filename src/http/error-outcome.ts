@@ -1,4 +1,10 @@
+type ErrorCode =
+  | 'bad-input'
+  | 'forbidden'
+  | 'conflict'
+
 type ErrorDocument = {
+  code: ErrorCode,
   source?: {
     pointer: string,
   },

@@ -5,6 +5,7 @@ import { Eventstore } from '../write-resources/eventstore'
 export const createStream = (client: EventStoreDBClient): Eventstore['appendStream'] => (streamName) => (event) => TE.tryCatch(
   async () => client.appendToStream(streamName, jsonEvent(event), { expectedRevision: NO_STREAM }),
   () => ([{
+    code: 'conflict',
     title: 'Unknown error from EventStore',
   }]),
 )

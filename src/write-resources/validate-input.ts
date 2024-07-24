@@ -14,6 +14,7 @@ export const validateInput = <A>(codec: t.Decoder<unknown, A>) => (
   E.mapLeft((errors) => pipe(
     errors,
     RA.map((error) => ({
+      code: 'bad-input',
       source: { pointer: `/${error.context.map((c) => c.key).filter(Boolean).join('/')}` },
       title: 'Invalid input',
       detail: pipe(
