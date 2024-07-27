@@ -28,11 +28,11 @@ const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>
 
-const send = (eventstore: Eventstore) => (cmd: Params) => pipe(
+const send = (eventstore: Eventstore, userId: string) => (cmd: Params) => pipe(
   {
     type: 'work-updated',
     data: {
-      actorId: 'you',
+      actorId: userId,
       workId: cmd.data.id,
       attributes: cmd.data.attributes,
     },
@@ -40,11 +40,11 @@ const send = (eventstore: Eventstore) => (cmd: Params) => pipe(
   eventstore.appendStream(`work.${cmd.data.id}`),
 )
 
-export const update: CommandHandler = (eventstore) => (input) => pipe(
+export const update: CommandHandler = (eventstore) => (input, userId) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
-  TE.chain(send(eventstore)),
+  TE.chain(send(eventstore, userId)),
   TE.map(() => ({})),
 )
 

@@ -11,7 +11,7 @@ const paramsCodec = t.type({
   collectionId: NonEmptyString,
 })
 
-export const create: CommandHandler = (eventstore) => (input) => pipe(
+export const create: CommandHandler = (eventstore) => (input, userId) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
@@ -21,7 +21,7 @@ export const create: CommandHandler = (eventstore) => (input) => pipe(
       entryId: cmd.id,
       doi: cmd.doi,
       collectionId: cmd.collectionId,
-      actorId: 'you',
+      actorId: userId,
     },
   })),
   TE.chain((event) => eventstore.createStream(`entry.${event.data.entryId}`)(event)),
