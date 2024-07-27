@@ -1,9 +1,11 @@
 import { Middleware } from '@koa/router'
 import * as E from 'fp-ts/Either'
+import * as O from 'fp-ts/Option'
 import { StatusCodes } from 'http-status-codes'
 import { Command } from './command'
 import { ErrorOutcome } from './error-outcome'
 import { Logger } from './logger'
+import { authenticate } from '../auth/authenticate'
 
 const errorToStatus = (errors: ErrorOutcome): number => {
   switch (errors[0].code) {
@@ -23,8 +25,17 @@ export type RouteHandler = Middleware
 type ExecuteCommand = (logger: Logger) => (command: Command) => RouteHandler
 
 export const executeCommand: ExecuteCommand = (logger) => (command) => async (context) => {
-  const result = await command(context.request.body)()
   context.response.type = 'json'
+  const userId = authenticate(context.request.token)
+  if (O.isNone(userId)) {
+    context.response.status = StatusCodes.UNAUTHORIZED
+    context.response.body = [{
+      code: 'forbidden',
+      title: 'Not authorised',
+    }] satisfies ErrorOutcome
+    return
+  }
+  const result = await command(context.request.body)()
   if (E.isRight(result)) {
     context.response.status = StatusCodes.OK
     context.response.body = result.right

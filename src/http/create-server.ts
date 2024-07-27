@@ -1,19 +1,15 @@
 import { createServer } from 'http'
-import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
-import { StatusCodes } from 'http-status-codes'
-import Koa, { Middleware } from 'koa'
+import Koa from 'koa'
 import { bearerToken } from 'koa-bearer-token'
 import bodyParser from 'koa-bodyparser'
 import { Command } from './command'
-import { ErrorOutcome } from './error-outcome'
 import { executeCommand } from './execute-command'
 import { logRequest } from './log-request'
 import * as L from './logger'
 import { Route, router } from './router'
 import { startServer } from './start-server'
-import { authenticate } from '../auth/authenticate'
 
 export type Action = 'create' | 'update' | 'delete'
 
@@ -27,20 +23,6 @@ export type Cmd = {
   path: string,
   action: Action,
   handler: Command,
-}
-
-const authenticator: Middleware = async (context, next) => {
-  const userId = authenticate(context.request.token)
-  if (O.isSome(userId))
-    await next()
-  else {
-    context.response.status = StatusCodes.UNAUTHORIZED
-    context.response.type = 'json'
-    context.response.body = [{
-      code: 'forbidden',
-      title: 'Not authorised',
-    }] satisfies ErrorOutcome
-  }
 }
 
 export const createHttpServer = (commands: ReadonlyArray<Cmd>): void => {
@@ -65,7 +47,6 @@ export const createHttpServer = (commands: ReadonlyArray<Cmd>): void => {
   app.use(logRequest(logger))
   app.use(bodyParser({ enableTypes: ['json'] }))
   app.use(bearerToken())
-  app.use(authenticator)
   app.use(routery.routes())
   app.use(routery.allowedMethods())
   const server = createServer(app.callback())
