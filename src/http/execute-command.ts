@@ -35,7 +35,7 @@ export const executeCommand: ExecuteCommand = (logger) => (command) => async (co
     }] satisfies ErrorOutcome
     return
   }
-  const result = await command(context.request.body)()
+  const result = await command(context.request.body, userId.value)()
   if (E.isRight(result)) {
     context.response.status = StatusCodes.OK
     context.response.body = result.right

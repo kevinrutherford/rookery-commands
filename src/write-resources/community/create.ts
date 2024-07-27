@@ -41,22 +41,22 @@ const paramsCodec = t.type({
 
 type Params = t.TypeOf<typeof paramsCodec>
 
-const send = (eventstore: Eventstore) => (cmd: Params) => {
+const send = (eventstore: Eventstore, userId: string) => (cmd: Params) => {
   const event = {
     type: 'community-created',
     data: {
       ...cmd,
-      actorId: 'you',
+      actorId: userId,
     },
   }
   return eventstore.createStream('community')(event)
 }
 
-export const create: CommandHandler = (eventstore) => (input) => pipe(
+export const create: CommandHandler = (eventstore) => (input, userId) => pipe(
   input,
   validateInput(paramsCodec),
   TE.fromEither,
-  TE.chain(send(eventstore)),
+  TE.chain(send(eventstore, userId)),
   TE.map(() => ({})),
 )
 
