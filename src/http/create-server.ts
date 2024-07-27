@@ -1,4 +1,5 @@
 import { createServer } from 'http'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe } from 'fp-ts/function'
 import { StatusCodes } from 'http-status-codes'
@@ -12,6 +13,7 @@ import { logRequest } from './log-request'
 import * as L from './logger'
 import { Route, router } from './router'
 import { startServer } from './start-server'
+import { authenticate } from '../auth/authenticate'
 
 export type Action = 'create' | 'update' | 'delete'
 
@@ -28,7 +30,8 @@ export type Cmd = {
 }
 
 const authenticator: Middleware = async (context, next) => {
-  if (context.request.token === process.env.DEVELOPMENT_BEARER_TOKEN)
+  const userId = authenticate(context.request.token)
+  if (O.isSome(userId))
     await next()
   else {
     context.response.status = StatusCodes.UNAUTHORIZED
