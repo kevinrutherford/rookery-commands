@@ -4,6 +4,6 @@ import { pipe } from 'fp-ts/function'
 export const authenticate = (token: string | undefined): O.Option<string> => pipe(
   token,
   O.fromNullable,
-  O.filter((value) => value === process.env.DEVELOPMENT_BEARER_TOKEN),
+  O.filter((value) => value !== ''),
 )
 
