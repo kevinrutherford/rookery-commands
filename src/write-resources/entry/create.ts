@@ -16,7 +16,7 @@ export const create: CommandHandler = (eventstore) => (input, userId) => pipe(
   validateInput(paramsCodec),
   TE.fromEither,
   TE.map((cmd) => ({
-    type: 'doi-entered',
+    type: 'discussion-started',
     data: {
       entryId: cmd.id,
       doi: cmd.doi,
