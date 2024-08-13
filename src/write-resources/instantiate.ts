@@ -3,6 +3,7 @@ import * as comment from './comment'
 import * as community from './community'
 import * as entry from './entry'
 import { Eventstore } from './eventstore'
+import * as inbox from './inbox'
 import * as work from './work'
 import { CommandHandler } from '../http/command'
 import { Action, Cmd } from '../http/index.open'
@@ -23,6 +24,7 @@ export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
     create('/entries', entry.create),
     update('/works/:id(10.*)', work.update),
     create('/comments', comment.create),
+    create('/inbox', inbox.create),
   ]
 }
 
