@@ -18,11 +18,13 @@ const send = (eventstore: Eventstore, userId: string) => (cmd: Params) => {
   const event = {
     type: 'comment-created',
     data: {
-      ...cmd,
       actorId: userId,
+      entryId: cmd.entryId,
+      content: cmd.content,
+      publishedAt: new Date(),
     },
   }
-  return eventstore.createStream(`comment.${event.data.id}`)(event)
+  return eventstore.createStream(`comment.${cmd.id}`)(event)
 }
 
 export const create: CommandHandler = (eventstore) => (input, userId) => pipe(
