@@ -18,6 +18,7 @@ const send = (eventstore: Eventstore, userId: string) => (cmd: Params) => {
   const event = {
     type: 'comment-created',
     data: {
+      id: cmd.id,
       actorId: userId,
       entryId: cmd.entryId,
       content: cmd.content,
