@@ -7,13 +7,15 @@ import { Eventstore } from '../eventstore'
 import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
-  id: NonEmptyString,
-  type: t.literal('member'),
-  attributes: t.type({
-    username: NonEmptyString,
-    display_name: NonEmptyString,
-    avatar_url: NonEmptyString,
-    followingCount: t.number,
+  data: t.type({
+    id: NonEmptyString,
+    type: t.literal('member'),
+    attributes: t.type({
+      username: NonEmptyString,
+      display_name: NonEmptyString,
+      avatar_url: NonEmptyString,
+      followingCount: t.number,
+    }),
   }),
 })
 
@@ -23,7 +25,7 @@ const send = (eventstore: Eventstore) => (cmd: Params) => {
   const event = {
     type: 'remote-member-fetched',
     data: {
-      ...cmd,
+      ...cmd.data,
     },
   }
   return eventstore.createStream(`remote-member.${event.data.id}`)(event)

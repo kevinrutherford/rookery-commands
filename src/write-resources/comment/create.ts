@@ -17,7 +17,7 @@ type Params = t.TypeOf<typeof paramsCodec>
 const send = (eventstore: Eventstore, userId: string) => (cmd: Params) => {
   const event = {
     type: 'comment-created',
-    data: {
+    data: { // SMELL -- duplicate knowledge of ES event structure
       id: cmd.id,
       actorId: userId,
       entryId: cmd.entryId,
