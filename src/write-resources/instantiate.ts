@@ -1,3 +1,4 @@
+import * as cache from './cache'
 import * as collection from './collection'
 import * as comment from './comment'
 import * as community from './community'
@@ -25,6 +26,7 @@ export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
     update('/works/:id(10.*)', work.update),
     create('/comments', comment.create),
     create('/inbox', inbox.create),
+    create('/cache/members', cache.createMember),
   ]
 }
 
