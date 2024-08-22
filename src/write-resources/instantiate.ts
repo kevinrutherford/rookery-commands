@@ -22,7 +22,7 @@ export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
     create('/community', community.create),
     create('/collections', collection.create),
     update('/collections/:id', collection.update),
-    create('/entries', entry.create),
+    create('/discussions', entry.create),
     update('/works/:id(10.*)', work.update),
     create('/comments', comment.create),
     create('/inbox', inbox.create),
