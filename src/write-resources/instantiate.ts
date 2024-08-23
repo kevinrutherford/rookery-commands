@@ -2,7 +2,7 @@ import * as cache from './cache'
 import * as collection from './collection'
 import * as comment from './comment'
 import * as community from './community'
-import * as entry from './entry'
+import * as discussion from './discussion'
 import { Eventstore } from './eventstore'
 import * as inbox from './inbox'
 import * as work from './work'
@@ -22,7 +22,7 @@ export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
     create('/community', community.create),
     create('/collections', collection.create),
     update('/collections/:id', collection.update),
-    create('/discussions', entry.create),
+    create('/discussions', discussion.create),
     update('/works/:id(10.*)', work.update),
     create('/comments', comment.create),
     create('/inbox', inbox.create),
