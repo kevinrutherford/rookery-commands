@@ -26,6 +26,7 @@ export const instantiate = (eventstore: Eventstore): ReadonlyArray<Cmd> => {
     update('/works/:id(10.*)', work.update),
     create('/comments', comment.create),
     create('/inbox', inbox.create),
+    create('/cache/discussions', cache.createDiscussion), // SMELL -- should only be callable by the local saga
     create('/cache/members', cache.createMember), // SMELL -- should only be callable by the local saga
   ]
 }
