@@ -8,7 +8,7 @@ import { validateInput } from '../validate-input'
 
 const paramsCodec = t.type({
   id: NonEmptyString,
-  entryId: NonEmptyString,
+  discussionId: NonEmptyString,
   content: NonEmptyString,
 })
 
@@ -20,7 +20,7 @@ const send = (eventstore: Eventstore, userId: string) => (cmd: Params) => {
     data: { // SMELL -- duplicate knowledge of ES event structure
       id: cmd.id,
       actorId: userId,
-      entryId: cmd.entryId,
+      discussionId: cmd.discussionId,
       content: cmd.content,
       publishedAt: new Date(),
     },

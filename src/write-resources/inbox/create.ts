@@ -34,7 +34,7 @@ const send = (eventstore: Eventstore) => (cmd: Params) => {
       id,
       actorId: cmd.actor.id,
       publishedAt: cmd.published,
-      entryId: cmd.target.id,
+      discussionId: cmd.target.id,
       content: cmd.object.content,
     },
   }
