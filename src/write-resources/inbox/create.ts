@@ -7,8 +7,7 @@ import { CommandHandler } from '../../http/command'
 import { Eventstore } from '../eventstore'
 import { validateInput } from '../validate-input'
 
-const paramsCodec = t.type({
-  '@context': t.array(t.literal('https://www.w3.org/ns/activitystreams')),
+const createComment = t.type({
   type: t.literal('Create'),
   actor: t.type({
     id: t.string,
@@ -23,6 +22,13 @@ const paramsCodec = t.type({
     id: t.string,
   }),
 })
+
+const paramsCodec = t.intersection([
+  t.type({
+    '@context': t.array(t.literal('https://www.w3.org/ns/activitystreams')),
+  }),
+  createComment,
+])
 
 type Params = t.TypeOf<typeof paramsCodec>
 
