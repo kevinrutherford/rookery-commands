@@ -17,7 +17,7 @@ describe('toRookeryEvent', () => {
   } satisfies Follow.FollowActivity
   const event = Follow.toRookeryEvent(activity, arbitraryWord())
 
-  it.failing('sets the event inbox to the following actor\'s inbox', () => {
+  it('sets the event inbox to the following actor\'s inbox', () => {
     expect(event.data).toHaveProperty('remoteActorInboxUrl')
     expect(event.data).toStrictEqual(expect.objectContaining({
       remoteActorInboxUrl: inboxUrl,

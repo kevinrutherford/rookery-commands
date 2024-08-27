@@ -21,7 +21,7 @@ export const toRookeryEvent = (activity: FollowActivity, id: string): DomainEven
   data: {
     id,
     remoteActorId: activity.actor.id,
-    remoteActorInboxUrl: activity.actor.id,
+    remoteActorInboxUrl: activity.actor.inbox,
     localMemberId: activity.object.id,
   },
 })
