@@ -9,11 +9,11 @@ SOURCES         := $(shell find src -type f)
 
 depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
 
-.PHONY: all build-dev ci-* clean clobber dev lint watch-*
+.PHONY: all build-dev ci-* clean clobber dev diagrams lint watch-*
 
 # Software development - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-all: $(GRAPHS_DIR)/modules.svg $(GRAPHS_DIR)/arch.svg $(MK_LINTED)
+all: diagrams $(MK_LINTED)
 
 watch-compiler: node_modules
 	npx tsc --watch
@@ -55,6 +55,11 @@ git-status-clean:
 node_modules: package.json .nvmrc
 	npm install
 	@touch $@
+
+diagrams: $(GRAPHS_DIR)/modules.svg $(GRAPHS_DIR)/components.svg $(GRAPHS_DIR)/arch.svg
+
+$(GRAPHS_DIR)/components.svg: $(SOURCES) $(GRAPHS_DIR) node_modules $(DEPCRUISE_CONFIG)
+	$(depcruise) --validate -T dot --collapse 3 src | dot -Tsvg > $@
 
 $(GRAPHS_DIR)/modules.svg: $(SOURCES) $(GRAPHS_DIR) node_modules $(DEPCRUISE_CONFIG)
 	$(depcruise) --validate -T dot src | dot -Tsvg > $@
