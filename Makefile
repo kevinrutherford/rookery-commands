@@ -5,7 +5,9 @@ IMAGE_VERSION := $(shell git describe --tags)
 MK_IMAGE  := .mk-built
 MK_COMPILED     := .mk-compiled
 MK_LINTED       := .mk-linted
+MK_TESTED := .mk-tested
 SOURCES         := $(shell find src -type f)
+TESTS := $(shell find test -type f)
 
 depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
 
@@ -13,24 +15,31 @@ depcruise := npx depcruise --config $(DEPCRUISE_CONFIG)
 
 # Software development - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-all: diagrams $(MK_LINTED)
+all: diagrams $(MK_TESTED) $(MK_LINTED)
 
-watch-compiler: node_modules
-	npx tsc --watch
-
-$(MK_COMPILED): node_modules $(SOURCES) tsconfig.json
+$(MK_COMPILED): node_modules $(SOURCES) $(TESTS) tsconfig.json
 	npx tsc --noEmit
 	@touch $@
 
-$(MK_LINTED): node_modules .eslintrc.js $(SOURCES)
-	npx eslint src --ext .ts
+$(MK_TESTED): node_modules $(SOURCES) $(TESTS) jest.config.js
+	npx jest
+	@touch $@
+
+$(MK_LINTED): node_modules .eslintrc.js $(SOURCES) $(TESTS)
+	npx eslint src test --ext .ts
 	npx ts-unused-exports tsconfig.json --silent --ignoreTestFiles
 	$(depcruise) src
 	@touch $@
 
+watch-compiler: node_modules
+	npx tsc --watch
+
+watch-tests: node_modules
+	 npx jest --watch
+
 # CI pipeline - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ci-test: clean $(MK_COMPILED) $(MK_LINTED)
+ci-test: clean $(MK_COMPILED) $(MK_TESTED) $(MK_LINTED)
 
 # Production build - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -73,7 +82,7 @@ $(GRAPHS_DIR):
 # Utilities - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean:
-	rm -f $(MK_COMPILED) $(MK_LINTED)
+	rm -f $(MK_COMPILED) $(MK_LINTED) $(MK_TESTED)
 	rm -rf $(GRAPHS_DIR)
 
 clobber: clean

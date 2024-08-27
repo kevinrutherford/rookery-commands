@@ -1,22 +1,22 @@
 /** @type {import('jest').Config} */
 const config = {
-  'cacheDirectory': './.jest',
-  'clearMocks': true,
-  'collectCoverageFrom': [ '**/*.ts' ],
-  'coverageDirectory': './coverage',
-  'coverageReporters': [ 'json', 'lcov', 'html', 'text' ],
-  'reporters': [ 'jest-wip-reporter' ],
+  cacheDirectory: './.jest',
+  clearMocks: true,
+  collectCoverageFrom: ['**/*.ts'],
+  coverageDirectory: './coverage',
+  coverageReporters: ['json', 'lcov', 'html', 'text'],
+  reporters: ['jest-wip-reporter'],
   roots: ['./src/', './test/'],
-  'testEnvironment': 'node',
-  'testRegex': '.*/.*-spec\\.[jt]sx?$',
-  'transform': {
+  testEnvironment: 'node',
+  testRegex: '.*/.*.test\\.[jt]sx?$',
+  transform: {
     '^.+\\.ts$': ['ts-jest', {
-      'diagnostics': false,
-      'isolatedModules': true,
-      'tsconfig': 'tsconfig.json',
+      diagnostics: false,
+      isolatedModules: true,
+      tsconfig: 'tsconfig.json',
     }],
   },
-  'verbose': true,
+  verbose: true,
 }
 
 module.exports = config
