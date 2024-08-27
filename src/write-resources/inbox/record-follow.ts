@@ -5,11 +5,12 @@ import { Eventstore } from '../eventstore'
 export const follow = t.type({
   type: t.literal('Follow'),
   actor: t.type({
-    type: t.literal('member'),
+    type: t.literal('Person'),
     id: t.string,
+    inbox: t.string,
   }),
   object: t.type({
-    type: t.literal('member'),
+    type: t.literal('Person'),
     id: t.string,
   }),
 })
@@ -27,7 +28,7 @@ export const recordFollow: Recorder = (eventstore) => (cmd) => {
     data: {
       id,
       remoteActorId: cmd.actor.id,
-      remoteActorUrl: cmd.actor.id,
+      remoteActorInboxUrl: cmd.actor.id,
       localMemberId: cmd.object.id,
     },
   }
