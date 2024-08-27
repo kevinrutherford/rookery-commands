@@ -15,21 +15,21 @@ export const follow = t.type({
   }),
 })
 
-type Params = t.TypeOf<typeof follow>
+type FollowActivity = t.TypeOf<typeof follow>
 
 type Recorder = (eventstore: Eventstore)
-=> (cmd: Params)
+=> (activity: FollowActivity)
 => ReturnType<ReturnType<typeof eventstore.createStream>>
 
-export const recordFollow: Recorder = (eventstore) => (cmd) => {
+export const recordFollow: Recorder = (eventstore) => (activity) => {
   const id = v4()
   const event = {
     type: 'inbox:member-followed-member',
     data: {
       id,
-      remoteActorId: cmd.actor.id,
-      remoteActorInboxUrl: cmd.actor.id,
-      localMemberId: cmd.object.id,
+      remoteActorId: activity.actor.id,
+      remoteActorInboxUrl: activity.actor.id,
+      localMemberId: activity.object.id,
     },
   }
   return eventstore.createStream(`inbox:follow.${id}`)(event)
