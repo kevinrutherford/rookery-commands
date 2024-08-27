@@ -2,8 +2,9 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts'
 import { createComment, recordCommentCreated } from './record-comment-created'
-import { follow, recordFollow } from './record-follow'
+import { recordFollow } from './record-follow'
 import { CommandHandler } from '../../http/command'
+import * as Follow from '../activity-pub/follow'
 import { Eventstore } from '../eventstore'
 import { validateInput } from '../validate-input'
 
@@ -13,7 +14,7 @@ const paramsCodec = t.intersection([
   }),
   t.union([
     createComment,
-    follow,
+    Follow.follow,
   ]),
 ])
 
